@@ -1,4 +1,13 @@
-let students = []
-//students.push({ name: 'Ermel Laxamana', studentId: 1, isUpdated: false })
+const mongoose = require('mongoose')
 
-module.exports = students
+const studentSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: ['Please enter a name'],
+    },
+  },
+  { timestamps: true }
+)
+
+module.exports = mongoose.model('Student', studentSchema)

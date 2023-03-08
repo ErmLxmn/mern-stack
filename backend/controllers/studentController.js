@@ -1,53 +1,56 @@
-let students = require('../models/student')
+const Student = require('../models/student')
 const asyncHandler = require('express-async-handler')
 
-asyncHandler(async function getStudents(req, res) {
+const getStudents = asyncHandler(async function (req, res) {
+  const students = await Student.find()
   res.json(students.length > 0 ? students : { message: 'Add Student first.' })
 })
 
-asyncHandler(async function getStudent(req, res) {
-  let student = students.find(function (student) {
-    return student.studentId === parseInt(req.params.id)
-  })
+const getStudent = asyncHandler(async function (req, res) {
+  const student = await Student.find()
   res.json(student || { message: 'No Student.' })
 })
 
-asyncHandler(async function addStudent(req, res) {
-  let studentId = 1
-  if (students.length > 0)
-    newStudentNumber = students[students.length - 1].studentId + 1
+const addStudent = asyncHandler(async function (req, res) {
+  const isExist = await Student.exists({ name: req.body.name })
 
-  students.push({
+  if (isExist) {
+    return res.json({ message: 'name already exist' })
+  }
+
+  const student = await Student.create({
     name: req.body.name,
-    studentId: studentId,
-    isUpdated: false,
   })
 
-  res.json({ message: `${req.body.name} added.` })
+  res.json(
+    student
+      ? { message: `Student: ${student.name} with ID: ${student._id} added.` }
+      : { message: 'Failed' }
+  )
 })
 
-asyncHandler(async function updateStudent(req, res) {
-  students = students.map(function (student) {
-    if (student.studentId === parseInt(req.params.id)) {
-      student.name = req.body.name
-      student.isUpdated = true
-      return student
-    }
-    return student
-  })
+const updateStudent = asyncHandler(async function (req, res) {
+  const isExist = await Student.exists({ _id: req.params.id })
+
+  if (!isExist) {
+    return res.json({ message: 'No Student' })
+  }
+
+  const updateStudent = await Student.findByIdAndUpdate(req.params.id, req.body)
 
   res.json({
-    message: `Student ${req.params.id} Updated.`,
+    message: `Student ${updateStudent._id} Updated.`,
   })
 })
 
-asyncHandler(async function deleteStudent(req, res) {
-  let deletedStudent = {}
+const deleteStudent = asyncHandler(async function (req, res) {
+  const isExist = await Student.exists({ _id: req.params.id })
 
-  students = students.filter(function (student) {
-    if (student.studentId === parseInt(req.params.id)) deletedStudent = student
-    return student.studentId !== parseInt(req.params.id)
-  })
+  if (!isExist) {
+    return res.json({ message: 'No Student' })
+  }
+
+  const deletedStudent = await Student.findByIdAndDelete(req.params.id)
 
   res.json({ message: `Deleted ${deletedStudent.name}.` })
 })
