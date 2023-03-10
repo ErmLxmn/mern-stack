@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "nodemon backend/server.js",
-    "start": "node backend/server.js"
+    "start": "node backend/server.js",
+    "client": "npm start --prefix frontend"
   },
   "keywords": [],
   "author": "",
