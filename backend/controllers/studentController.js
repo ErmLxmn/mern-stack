@@ -7,7 +7,7 @@ const getStudents = asyncHandler(async function (req, res) {
 })
 
 const getStudent = asyncHandler(async function (req, res) {
-  const student = await Student.find()
+  const student = await Student.findById(req.params.id)
   res.json(student || { message: 'No Student.' })
 })
 
@@ -20,6 +20,7 @@ const addStudent = asyncHandler(async function (req, res) {
 
   const student = await Student.create({
     name: req.body.name,
+    user: req.user.id,
   })
 
   res.json(
