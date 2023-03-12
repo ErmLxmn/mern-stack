@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "nodemon backend/server.js",
-    "start": "node backend/server.js",
-    "client": "npm start --prefix frontend"
+    "server": "node backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run test\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "mongoose": "^7.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "concurrently": "^7.6.0"
   }
 }

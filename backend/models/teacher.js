@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const studentSchema = mongoose.Schema(
+const teacherSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -11,17 +11,12 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please enter a name'],
     },
-    teacher: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Teacher',
-      default: null,
-    },
-    grade: {
-      type: Number,
+    students: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
       default: null,
     },
   },
   { timestamps: true }
 )
 
-module.exports = mongoose.model('Student', studentSchema)
+module.exports = mongoose.model('Teacher', teacherSchema)

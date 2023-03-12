@@ -11,7 +11,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(errorHandler)
 app.use('/api/students', require('./routes/studentRoutes'))
-app.use('/api/user', require('./routes/userRoutes'))
+app.use('/api/teachers', require('./routes/teacherRoutes'))
+app.use('/api/users', require('./routes/userRoutes'))
 
 app.listen(port, function () {
   console.log(`Started at port: ${port}`)

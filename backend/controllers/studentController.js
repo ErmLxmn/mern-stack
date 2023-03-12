@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler')
 
 const getStudents = asyncHandler(async function (req, res) {
   const students = await Student.find()
-  res.json(students.length > 0 ? students : { message: 'Add Student first.' })
+  res.json(students)
 })
 
 const getStudent = asyncHandler(async function (req, res) {
@@ -28,6 +28,19 @@ const addStudent = asyncHandler(async function (req, res) {
       ? { message: `Student: ${student.name} with ID: ${student._id} added.` }
       : { message: 'Failed' }
   )
+})
+
+const updateGrade = asyncHandler(async function (req, res) {
+  let student = req.body
+  let gradedStudents = []
+
+  for (let i = 0; i < student.length; i++) {
+    let updateGrade = await Student.findByIdAndUpdate(student[i].student, {
+      grade: student[i].grade,
+    })
+    gradedStudents.push(updateGrade)
+  }
+  res.json({ graded: gradedStudents })
 })
 
 const updateStudent = asyncHandler(async function (req, res) {
@@ -62,4 +75,5 @@ module.exports = {
   addStudent,
   updateStudent,
   deleteStudent,
+  updateGrade,
 }
